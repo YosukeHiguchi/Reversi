@@ -1,0 +1,32 @@
+#main_display {
+  width: 1000px;
+  height: 722px;
+  margin: auto;
+  position: relative;
+}
+
+#wrapper {
+  width: 722px;
+  height: 722px;
+  position: absolute;
+}
+
+#game_board {
+  width: inherit;
+  height: inherit;
+  background: url("../img/GameBoard.gif");
+  position: absolute;
+}
+
+#canvas {
+  width: inherit;;
+  height: inherit;;
+  position: absolute;
+}
+
+#game_menu {
+  width: 278px;
+  height: 722px;
+  right: 0px;
+  position: absolute;
+}
