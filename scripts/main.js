@@ -11,9 +11,6 @@ function main() {
   if (cursorX >= 0 && cursorY >= 0 && cursorX <= W && cursorY <= H &&
       board[y_grid][x_grid] == 0 && isPuttable(x_grid, y_grid, currentID)) {
     placeDisk(x_grid, y_grid);
-
-    animateDisk(x_grid, y_grid);
-
     switchID();
   }
 
@@ -22,8 +19,10 @@ function main() {
 document.onmousemove = function (e) {
   var wrapperDiv = document.getElementById("main_display");
 
-  cursorX = e.clientX - wrapperDiv.offsetLeft;
-  cursorY = e.clientY - wrapperDiv.offsetTop;
+  if (frame == 0) {
+    cursorX = e.clientX - wrapperDiv.offsetLeft;
+    cursorY = e.clientY - wrapperDiv.offsetTop;
+  }
 
   if (cursorX >= 0 && cursorY >= 0 && cursorX <= W && cursorY <= H &&
       board[Math.floor(cursorY / 91)][Math.floor(cursorX / 91)] == 0) {

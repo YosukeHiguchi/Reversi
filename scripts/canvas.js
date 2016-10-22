@@ -18,6 +18,7 @@ function init() {
 
 function placeDisk(x_grid, y_grid) {
   board[y_grid][x_grid] = currentID;
+  animateDisk(x_grid, y_grid);
   updateBoard();
 }
 
@@ -55,65 +56,15 @@ function drawDisk(x_grid, y_grid, id, isHover) {
 
 //find where to flip when disk(currentID) is place at (x, y) and start flip animation
 function animateDisk(x, y) {
-  diskToFlip = Array(N);
-  for (var i = 0; i < N; i++) {
-    diskToFlip[i] = new Array(N);
-    for (var j = 0; j < N; j++) diskToFlip[i][j] = 0;
-  }
+  setDiskToFlip(x, y, currentID);
 
-  var ID = currentID;
-  var opID = (currentID == 1)? 2: 1;
-  var xDir = [1, 0, 1, 1];
-  var yDir = [0, 1, 1, -1];
-  var side1Cont, side2Cont;
-  var side1Grid, side2Grid;
-
-  for (var d = 0; d < 4; d++) {
-    side1Cont = side2Cont = true;
-
-    //side1
-    for (var v = 1; v < N; v++) {
-      side1Grid = -1;
-      if (x - v * xDir[d] >= 0 && y - v * yDir[d] >= 0 && y - v * yDir[d] < N)
-        side1Grid = board[y - v * yDir[d]][x - v * xDir[d]];
-
-      if ((v == 1 && side1Grid != opID) || side1Grid <= 0) { side1Cont = false; break; }
-      if (v >= 2 && side1Grid == ID) break;
-    }
-    //side2
-    for (var v = 1; v < N; v++) {
-      side2Grid = -1;
-      if (x + v * xDir[d] >= 0 && y + v * yDir[d] >= 0 && y + v * yDir[d] < N)
-        side2Grid = board[y + v * yDir[d]][x + v * xDir[d]];
-
-      if ((v == 1 && side2Grid != opID) || side2Grid <= 0) { side2Cont = false; break; }
-      if (v >= 2 && side2Grid == ID) break;
-    }
-
-    //side1
-    for (var v = 1; v < N && side1Cont; v++) {
-      side1Grid = board[y - v * yDir[d]][x - v * xDir[d]];
-      if (side1Grid == ID) break;
-      else diskToFlip[y - v * yDir[d]][x - v * xDir[d]] = 1;
-    }
-    //side2
-    for (var v = 1; v < N && side2Cont; v++) {
-      side2Grid = board[y + v * yDir[d]][x + v * xDir[d]];
-      if (side2Grid == ID) break;
-      else diskToFlip[y + v * yDir[d]][x + v * xDir[d]] = 1;
-    }
-  }
-
-  for (var i = 0; i < N; i++) {
-    console.log(diskToFlip[i]);
-  }
-
+  //reset board at (i, j) where disk is already placed
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
       if (diskToFlip[i][j] == 1) board[i][j] = 0;
     }
   }
-  frame = 0;
+
   animation_time = setInterval(animate, 50);
 }
 
@@ -122,7 +73,7 @@ function animate() {
   var opID = (currentID == 1)? 2: 1;
 
   frame += 3;
-  if (frame == 33) {
+  if (frame == 36) {
     for (var i = 0; i < N ; i++) {
       for (var j = 0; j < N; j++) {
         if (diskToFlip[i][j] == 1) {
@@ -130,13 +81,14 @@ function animate() {
         }
       }
     }
+
+    frame = 0;
     clearInterval(animation_time);
-    updateBoard();
+
     return;
   }
 
   updateBoard();
-
   for (var i = 0; i < N ; i++) {
     for (var j = 0; j < N; j++) {
       if (diskToFlip[i][j] == 1) {
