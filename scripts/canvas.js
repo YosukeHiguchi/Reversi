@@ -20,6 +20,7 @@ function placeDisk(x_grid, y_grid) {
   board[y_grid][x_grid] = currentID;
   animateDisk(x_grid, y_grid);
   updateBoard();
+
 }
 
 function hoverDisk(x_px, y_px) {
@@ -73,6 +74,7 @@ function animate() {
   var opID = (currentID == 1)? 2: 1;
 
   frame += 3;
+
   if (frame == 36) {
     for (var i = 0; i < N ; i++) {
       for (var j = 0; j < N; j++) {
@@ -85,10 +87,13 @@ function animate() {
     frame = 0;
     clearInterval(animation_time);
 
+    GAME_FINISHED = isGameOver();
+
     return;
   }
 
   updateBoard();
+
   for (var i = 0; i < N ; i++) {
     for (var j = 0; j < N; j++) {
       if (diskToFlip[i][j] == 1) {
