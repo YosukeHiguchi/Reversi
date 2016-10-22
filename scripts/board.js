@@ -70,7 +70,7 @@ function setDiskToFlip(x, y, ID) {
     side1Cont = side2Cont = true;
 
     //side1
-    for (var v = 1; v < N; v++) {
+    for (var v = 1; v <= N; v++) {
       side1Grid = -1;
       if (x - v * xDir[d] >= 0 && y - v * yDir[d] >= 0 && y - v * yDir[d] < N)
         side1Grid = board[y - v * yDir[d]][x - v * xDir[d]];
@@ -79,9 +79,9 @@ function setDiskToFlip(x, y, ID) {
       if (v >= 2 && side1Grid == ID) break;
     }
     //side2
-    for (var v = 1; v < N; v++) {
+    for (var v = 1; v <= N; v++) {
       side2Grid = -1;
-      if (x + v * xDir[d] >= 0 && y + v * yDir[d] >= 0 && y + v * yDir[d] < N)
+      if ((x + v * xDir[d] < N) && (y + v * yDir[d] < N) && (y + v * yDir[d] >= 0))
         side2Grid = board[y + v * yDir[d]][x + v * xDir[d]];
 
       if ((v == 1 && side2Grid != opID) || side2Grid <= 0) { side2Cont = false; break; }
