@@ -2,9 +2,12 @@ var cursorX = -1, cursorY = -1;
 var currentID = 1;
 var N = 8;
 var GAME_FINISHED = false;
+var AI_TURN = false;
 
 document.onclick = main;
 document.onmousemove = mouseMove;
+
+//setInterval(main, 800);
 
 function main() {
   if (GAME_FINISHED) return;
@@ -15,13 +18,33 @@ function main() {
       board[y_grid][x_grid] == 0 && isPuttable(x_grid, y_grid, currentID)) {
     placeDisk(x_grid, y_grid);
     switchID();
+
+    AI_TURN = true;
   }
 
+  //AI vs AI(same)
+  //callAI();
+}
+
+//call in canvas.js animate func
+function callAI() {
+  AI_TURN = false;
+
+  var xy = Array(2);
+
+  /*-----AI------*/
+  xy = test(currentID);
+  /*-------------*/
+
+  console.log("x: " + xy[0] + " y: " + xy[1]);
+  if (xy[0] != -1) placeDisk(xy[0], xy[1]);
+
+  switchID();
 }
 
 function mouseMove(e) {
   if (GAME_FINISHED) return;
-  
+
   var wrapperDiv = document.getElementById("main_display");
 
   //control when animation is playing
@@ -34,13 +57,10 @@ function mouseMove(e) {
   var cnt = 0;
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (board[i][j] == 0 && isPuttable(j, i, currentID)) {
-        cnt++;
-      }
+      if (board[i][j] == 0) cnt++;
     }
   }
   if (cnt == 0 && frame == 0) switchID();
-  console.log(cnt);
 
   if (cursorX >= 0 && cursorY >= 0 && cursorX <= W && cursorY <= H &&
       board[Math.floor(cursorY / 91)][Math.floor(cursorX / 91)] == 0) {

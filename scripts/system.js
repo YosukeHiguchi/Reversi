@@ -3,7 +3,7 @@ function isGameOver() {
   var white = 0;
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
-      if (board[i][j] == 0 && !isPuttable(j, i, 1) && isPuttable(j, i, 2)) return false;
+      if (board[i][j] == 0 && (isPuttable(j, i, 1) || isPuttable(j, i, 2))) return false;
       if (board[i][j] == 1) black++;
       if (board[i][j] == 2) white++;
     }

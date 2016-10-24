@@ -55,7 +55,7 @@ function drawDisk(x_grid, y_grid, id, isHover) {
 
 }
 
-//find where to flip when disk(currentID) is place at (x, y) and start flip animation
+//flips disks when a disk is placed at (x, y)
 function animateDisk(x, y) {
   setDiskToFlip(x, y, currentID);
 
@@ -67,6 +67,7 @@ function animateDisk(x, y) {
   }
 
   animation_time = setInterval(animate, 50);
+
 }
 
 
@@ -75,12 +76,11 @@ function animate() {
 
   frame += 3;
 
+  //end of animation
   if (frame == 36) {
     for (var i = 0; i < N ; i++) {
       for (var j = 0; j < N; j++) {
-        if (diskToFlip[i][j] == 1) {
-          board[i][j] = opID;
-        }
+        if (diskToFlip[i][j] == 1) board[i][j] = opID;
       }
     }
 
@@ -89,6 +89,8 @@ function animate() {
 
     GAME_FINISHED = isGameOver();
 
+    if (AI_TURN) callAI();
+
     return;
   }
 
@@ -96,9 +98,8 @@ function animate() {
 
   for (var i = 0; i < N ; i++) {
     for (var j = 0; j < N; j++) {
-      if (diskToFlip[i][j] == 1) {
+      if (diskToFlip[i][j] == 1)
         flipDisk(90 * j + 46, 90 * i + 46, currentID);
-      }
     }
   }
 }
